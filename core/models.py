@@ -5,6 +5,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15, unique=True)
+    age = models.IntegerField(default=0)
     monthly_salary = models.FloatField()
     approved_limit = models.FloatField()
    

@@ -11,7 +11,7 @@ from django.db.models import Sum
 def register_customer(request):
     serializer = CustomerSerializer(data=request.data)
     if serializer.is_valid():
-        monthly_salary = serializer.validated_data['monthly_salary']
+        monthly_salary = serializer.validated_data['monthly_salary']    
         serializer.save(approved_limit=round(36 * monthly_salary, -5))
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
