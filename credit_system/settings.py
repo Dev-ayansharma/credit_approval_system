@@ -75,6 +75,11 @@ WSGI_APPLICATION = 'credit_system.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # ⬅️ This line loads variables from your .env file
+
 
 DATABASES = {
     "default": {

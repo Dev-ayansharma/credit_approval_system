@@ -6,5 +6,5 @@ openpyxl
 celery
 redis
 gunicorn
-
+python-dotenv
 
