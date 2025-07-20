@@ -6,6 +6,10 @@ from datetime import datetime
 @shared_task
 def ingest_customer_data(file_path="customer_data.xlsx"):
     df = pd.read_excel(file_path)
+
+    # Normalize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
     for _, row in df.iterrows():
         Customer.objects.update_or_create(
             customer_id=row["customer_id"],
@@ -19,9 +23,14 @@ def ingest_customer_data(file_path="customer_data.xlsx"):
             }
         )
 
+
 @shared_task
 def ingest_loan_data(file_path="loan_data.xlsx"):
     df = pd.read_excel(file_path)
+
+    # Normalize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
     for _, row in df.iterrows():
         try:
             customer = Customer.objects.get(customer_id=row["customer_id"])
@@ -33,10 +42,11 @@ def ingest_loan_data(file_path="loan_data.xlsx"):
                     "tenure": row["tenure"],
                     "interest_rate": row["interest_rate"],
                     "monthly_installment": row["monthly_repayment"],
-                    "emis_paid_on_time": row["EMIs paid on time"],
+                    "emis_paid_on_time": row["emis_paid_on_time"],
                     "start_date": pd.to_datetime(row["start_date"]),
                     "end_date": pd.to_datetime(row["end_date"]),
                 }
             )
         except Customer.DoesNotExist:
             continue
+

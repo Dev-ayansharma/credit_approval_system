@@ -1,33 +1,39 @@
-# docker-compose.yml
-version: "3.9"
+
 
 services:
+  web:
+    build: .
+    command: gunicorn credit_system.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=creditdb
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+
   db:
-    image: postgres
+    image: postgres:15
     environment:
       POSTGRES_DB: creditdb
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   redis:
-    image: redis
+    image: redis:latest
     ports:
       - "6379:6379"
 
-  web:
+  celery:
     build: .
-    command: gunicorn credit_system.wsgi:application --bind 0.0.0.0:8000
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
+    command: celery -A credit_system worker --loglevel=info
     depends_on:
-      - db
       - redis
-
-volumes:
-  postgres_data:
+      - db
