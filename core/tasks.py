@@ -8,7 +8,7 @@ from datetime import datetime
 def ingest_customer_data(file_path="customer_data.xlsx"):
     df = pd.read_excel(file_path)
 
-    # Normalize column names
+   
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
     for _, row in df.iterrows():

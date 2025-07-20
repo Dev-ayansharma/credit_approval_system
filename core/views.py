@@ -75,6 +75,6 @@ def get_loan_by_id(request, loan_id):
     except Loan.DoesNotExist:
         return Response({"error": "Loan not found"}, status=404)
     
-    serializer = LoanDetailSerializer(loan)  # Use the detailed one
+    serializer = LoanDetailSerializer(loan)  
     return Response(serializer.data, status=200)
 
