@@ -77,15 +77,16 @@ WSGI_APPLICATION = 'credit_system.wsgi.application'
 import os
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': 5432,
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME", "creditdb"),
+        "USER": os.getenv("DATABASE_USER", "user"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD", "password"),
+        "HOST": os.getenv("DATABASE_HOST", "db"),  # <- This must be "db"
+        "PORT": "5432",
     }
 }
+
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
 
