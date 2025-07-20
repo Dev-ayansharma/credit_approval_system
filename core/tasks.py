@@ -1,6 +1,7 @@
 import pandas as pd
 from celery import shared_task
 from .models import Customer, Loan
+
 from datetime import datetime
 
 @shared_task
@@ -12,19 +13,15 @@ def ingest_customer_data(file_path="customer_data.xlsx"):
 
     for _, row in df.iterrows():
         Customer.objects.update_or_create(
-            customer_id=row["customer_id"],
+            phone_number=row["phone_number"],
             defaults={
                 "first_name": row["first_name"],
                 "last_name": row["last_name"],
                 "age": row["age"],
-                "phone_number": row["phone_number"],
                 "monthly_salary": row["monthly_salary"], 
                 "approved_limit": row["approved_limit"]
             }
         )
-
-
-
 
 
 @shared_task

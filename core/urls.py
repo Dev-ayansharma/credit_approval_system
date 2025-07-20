@@ -6,4 +6,5 @@ urlpatterns = [
     path("check-eligibility/", views.check_loan_eligibility),
     path("create-loan/", views.create_loan),
     path("loans/<int:customer_id>/", views.get_loans_by_customer),
+    path("loan/<int:loan_id>/", views.get_loan_by_id),  
 ]

@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Customer, Loan
-from .serializers import CustomerSerializer, LoanSerializer
+from .serializers import CustomerSerializer, LoanSerializer, LoanDetailSerializer
 from django.db.models import Sum
 
 @api_view(["POST"])
@@ -66,3 +66,15 @@ def get_loans_by_customer(request, customer_id):
     loans = Loan.objects.filter(customer__customer_id=customer_id)
     serializer = LoanSerializer(loans, many=True)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_loan_by_id(request, loan_id):
+    try:
+        loan = Loan.objects.get(loan_id=loan_id)
+    except Loan.DoesNotExist:
+        return Response({"error": "Loan not found"}, status=404)
+    
+    serializer = LoanDetailSerializer(loan)  # Use the detailed one
+    return Response(serializer.data, status=200)
+
